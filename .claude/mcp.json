@@ -6,7 +6,7 @@
         "@modelcontextprotocol/server-postgres"
       ],
       "env": {
-        "POSTGRES_CONNECTION_STRING": "postgresql://postgres:postres@69.62.81.203:5433/guardian?sslmode=disable"
+        "POSTGRES_CONNECTION_STRING": "postgresql://postgres:xxxxx/guardian?sslmode=disable"
       }
     }
   }
