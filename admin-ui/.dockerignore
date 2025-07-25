@@ -1,0 +1,75 @@
+# Docker ignore file for Guardian Admin UI
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Production build (will be created in Docker)
+# build/
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.production
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+README.md
+docs/
+
+# Test files
+src/**/*.test.js
+src/**/*.spec.js
+coverage/
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# ESLint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Backup files
+*.bak
+*.backup
+
+# Temporary files
+*.tmp
+*~
+
+# Local development
+.local/
+local/
+
+# Docker files
+docker-compose*.yml
+Dockerfile*
+.dockerignore

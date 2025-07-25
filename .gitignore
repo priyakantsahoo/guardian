@@ -1,0 +1,107 @@
+# Environment files
+.env
+.env.local
+.env.production
+.env.development
+*.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+auth_service.log
+fixed-startup.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+proxy.pid
+
+# Dependency directories
+node_modules/
+*/node_modules/
+
+# Production builds
+build/
+dist/
+target/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Spring Boot
+HELP.md
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# React
+build/
+coverage/
+
+# Docker
+*.tar
+docker-compose.override.yml
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup files
+*.backup
+*.bak
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Security
+*.key
+*.pem
+*.p12
+*.jks
+
+# Local configuration
+config/local/
+application-local.properties
+
+# Test results
+test-results/
+coverage/
+
+# Package files
+*.tgz
+*.tar.gz
+*.zip
+
+# Cache
+.cache/
+.npm/
+.yarn/

@@ -1,0 +1,91 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: guardian-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: authdb
+      POSTGRES_USER: authuser
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-guardian_secure_password}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    networks:
+      - guardian-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U authuser -d authdb"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # Guardian Auth Service
+  guardian-auth:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: guardian-auth-service
+    restart: unless-stopped
+    environment:
+      # Database Configuration
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/authdb
+      SPRING_DATASOURCE_USERNAME: authuser
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-guardian_secure_password}
+      
+      # JWT Configuration
+      JWT_SECRET: ${JWT_SECRET:-Z6B/QtBlba0yvQKB1uOvL6LC3MmobMAjjzKc1AKYFb5R1W9l/rx+YDKhKhZs1+PXInkR3cuH/9WU9gDpfsCD4g==}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-3600000}
+      
+      # Application Configuration
+      SERVER_PORT: 8084
+      SPRING_PROFILES_ACTIVE: docker
+      
+      # GeoLite2 Configuration
+      GEOLITE2_ENABLED: ${GEOLITE2_ENABLED:-true}
+      GEOLITE2_DATABASE_PATH: /app/GeoLite2-City.mmdb
+      
+      # Logging Configuration
+      LOGGING_LEVEL_ROOT: ${LOG_LEVEL:-INFO}
+      LOGGING_LEVEL_COM_EXAMPLE_AUTHSERVICE: ${LOG_LEVEL_APP:-DEBUG}
+      
+      # Admin Configuration
+      ADMIN_ENABLED: ${ADMIN_ENABLED:-true}
+      
+      # Performance Configuration
+      JAVA_OPTS: -Xmx1g -Xms512m -XX:+UseG1GC -XX:MaxGCPauseMillis=200
+      
+    ports:
+      - "${AUTH_PORT:-8084}:8084"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - guardian-network
+    volumes:
+      - auth_logs:/app/logs
+      - ./GeoLite2-City.mmdb:/app/GeoLite2-City.mmdb:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8084/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+networks:
+  guardian-network:
+    driver: bridge
+    name: guardian-network
+
+volumes:
+  postgres_data:
+    name: guardian-postgres-data
+    driver: local
+  auth_logs:
+    name: guardian-auth-logs
+    driver: local
