@@ -88,6 +88,10 @@ temp/
 *.p12
 *.jks
 
+# Large files (use Git LFS or download separately)
+*.mmdb
+GeoLite2-*.mmdb
+
 # Local configuration
 config/local/
 application-local.properties
